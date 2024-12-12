@@ -21,7 +21,7 @@ CREATE TABLE Area (
 
 -- Create Restaurant table
 CREATE TABLE Restaurant (
-    r_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    r_id TEXT PRIMARY KEY,
     r_name TEXT NOT NULL,
     a_id INTEGER NOT NULL,
     FOREIGN KEY (a_id) REFERENCES Area (a_id)
@@ -29,13 +29,13 @@ CREATE TABLE Restaurant (
 
 -- Create Type table
 CREATE TABLE Type (
-    t_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    t_id INTEGER PRIMARY KEY,
     t_name TEXT NOT NULL
 );
 
 -- Create Restaurant_Types table
 CREATE TABLE Restaurant_Types (
-    r_id INTEGER NOT NULL,
+    r_id TEXT NOT NULL,
     t_id INTEGER NOT NULL,
     PRIMARY KEY (r_id, t_id),
     FOREIGN KEY (r_id) REFERENCES Restaurant (r_id),
@@ -46,7 +46,7 @@ CREATE TABLE Restaurant_Types (
 CREATE TABLE History (
     h_id INTEGER NOT NULL,
     u_id INTEGER NOT NULL,
-    r_id INTEGER NOT NULL,
+    r_id TEXT NOT NULL,
     Rate REAL NOT NULL,
     Reviews TEXT,
     Date DATETIME NOT NULL,
