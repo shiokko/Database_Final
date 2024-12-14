@@ -48,7 +48,8 @@ INSERT INTO Restaurant (r_id, r_name, a_id) VALUES
 ('201P', '麥味登 文山政大店', 203),
 ('201Q', '李白Breakfast x coffee', 203),
 ('201R', 'Louisa Coffee 路易莎咖啡(政大萬壽門市)', 203),
-('201S', 'Spukie 政大店', 203);
+('201S', 'Spukie 政大店', 203),
+('201T', '布朗奇優先早餐店', 201);
 
 
 INSERT INTO Type (t_id, t_name) VALUES
@@ -117,3 +118,4 @@ INSERT INTO Restaurant_Types (r_id, t_id) VALUES
 ('201Q', 1001),
 ('201R', 1002),
 ('201S', 1005);
+('201T', 1001);
