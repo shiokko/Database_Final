@@ -1,0 +1,35 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f8ff;
+    color: #333;
+    text-align: center;
+    padding: 20px;
+}
+
+.welcome-container {
+    margin-top: 50px;
+}
+
+h1 {
+    color: #4CAF50;
+    font-size: 2.5em;
+}
+
+p {
+    font-size: 1.2em;
+}
+
+a.btn {
+    text-decoration: none;
+    color: white;
+    background-color: #4CAF50;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 1em;
+    margin-top: 20px;
+    display: inline-block;
+}
+a.btn:hover {
+    background-color: #45a049;
+}
+
