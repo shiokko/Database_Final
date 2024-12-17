@@ -1,29 +1,24 @@
+<!--login page-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
-    <title>Login</title>
+    <title>Login Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="login-box">
-
         <div class="login-header">
             <header>Login</header>
         </div>
-
         <form action="/" method="POST">
-            <div class="input-box">
-                <input type="text" name="username" class="input-field" placeholder="User name" autocomplete="off" required>
-            </div>
-
-            <div class="input-submit">
-                <button type="submit" class="submit-btn">Sign In</button>
-                <label for="submit">Sign In</label>
-            </div>
+            <input type="text" name="username" class="input-field" placeholder="Username" required>
+            <button type="submit" class="submit-btn">Sign In</button>
         </form>
+        <div class="sign-up-link">
+            Don't have an account? <a href="#">Sign up</a>
+        </div>
     </div>
 </body>
 </html>
