@@ -1,35 +1,69 @@
+/* General reset for consistent styling */
+body, h1, p, ul, li, a {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f0f8ff;
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f4f8;
     color: #333;
-    text-align: center;
-    padding: 20px;
+    margin: 0;
 }
 
-.welcome-container {
-    margin-top: 50px;
+/* Navbar styling */
+.navbar {
+    background-color: #1f2937;
+    padding: 1rem;
 }
 
-h1 {
-    color: #4CAF50;
-    font-size: 2.5em;
+.navbar ul {
+    list-style: none;
+    display: flex;
+    justify-content: space-around;
 }
 
-p {
-    font-size: 1.2em;
+.navbar li {
+    margin: 0;
 }
 
-a.btn {
+.navbar a {
+    color: #ffffff;
     text-decoration: none;
-    color: white;
-    background-color: #4CAF50;
-    padding: 10px 20px;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
     border-radius: 5px;
-    font-size: 1em;
-    margin-top: 20px;
-    display: inline-block;
+    transition: background-color 0.3s;
 }
-a.btn:hover {
-    background-color: #45a049;
+
+.navbar a:hover {
+    background-color: #4b5563;
+}
+
+.navbar .btn {
+    font-weight: bold;
+}
+
+/* Welcome container styling */
+.welcome-container {
+    text-align: center;
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 600px;
+    background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.welcome-container h1 {
+    font-size: 2.5rem;
+    color: #1f2937;
+    margin-bottom: 1rem;
+}
+
+.welcome-container p {
+    font-size: 1.2rem;
+    color: #4b5563;
 }
 
