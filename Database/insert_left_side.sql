@@ -1,8 +1,8 @@
-INSERT INTO Area (a_id, a_name) VALUES
+INSERT OR IGNORE INTO Area (a_id, a_name) VALUES
 (301, '指南路二段大門左半邊附近'),
-(302, '新光路一段附近'),
+(302, '新光路一段附近');
 
-INSERT INTO Restaurant (r_id, r_name, a_id) VALUES
+INSERT OR IGNORE INTO Restaurant (r_id, r_name, a_id) VALUES
 ('300A', '老味道鍋物', 301),
 ('300B', '蛋蛋的幸福 蔬食料理', 301),
 ('300C', '阿里郎韓國小吃', 301),
@@ -43,7 +43,7 @@ INSERT INTO Restaurant (r_id, r_name, a_id) VALUES
 ('301L', '早安找點', 302);
 
 
-INSERT INTO Type (t_id, t_name) VALUES
+INSERT OR IGNORE INTO Type (t_id, t_name) VALUES
 (1001, '早餐店'),
 (1002, '飲料店'),
 (1003, '台式料理'),
@@ -57,7 +57,7 @@ INSERT INTO Type (t_id, t_name) VALUES
 (1011, '東南亞料理'),
 (1012, '點心類');
 
-INSERT INTO Restaurant_Types (r_id, t_id) VALUES
+INSERT OR IGNORE INTO Restaurant_Types (r_id, t_id) VALUES
 ('300A', 1003),
 ('300B', 1007),
 ('300B', 1008),

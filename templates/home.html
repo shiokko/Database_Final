@@ -18,7 +18,15 @@
     </nav>
     <div class="welcome-container">
         <h1>Welcome, {{ username }}!</h1>
-        <p>We're glad to have you here.</p>
+        <p>你今天想吃甚麼?</p>
+    </div>
+    <div class="restaurants-list">
+        <h2>餐廳推薦</h2>
+        <ul>
+            {% for restaurant in restaurants %}
+            <li>{{ restaurant }}</li>
+            {% endfor %}
+        </ul>
     </div>
 </body>
 </html>
