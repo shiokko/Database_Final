@@ -11,7 +11,7 @@ conn = sqlite3.connect('project.db')
 cursor = conn.cursor()
 
 # 定義資料夾路徑
-sql_folder = 'DATABASE'
+sql_folder = 'Database'
 
 # 執行 create_table.sql 建立資料表
 # create_sql_path = os.path.join(sql_folder, 'create_table.sql')
