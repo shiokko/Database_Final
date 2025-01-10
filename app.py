@@ -11,7 +11,7 @@ conn = sqlite3.connect('project.db')
 cursor = conn.cursor()
 
 # 定義資料夾路徑
-sql_folder = 'DATABASE'
+sql_folder = 'Database'
 
 # 執行 create_table.sql 建立資料表
 # create_sql_path = os.path.join(sql_folder, 'create_table.sql')
@@ -45,6 +45,11 @@ def login():
     if request.method == 'POST':
         name = request.form['username']
         session['username'] = name  # Store username in session
+        conn = sqlite3.connect('project.db')
+        cursor = conn.cursor()
+        cursor.execute('INSERT INTO Users (Name) VALUES (?);', (name,))  
+        conn.commit()  # Commit the transaction
+        conn.close()   # Close the connection
         return redirect(url_for('welcome'))
 
     return render_template('index.html')
@@ -89,13 +94,29 @@ def welcome():
     return render_template('home.html', username=username, restaurants=formatted_restaurants)
 
 
-
 @app.route('/home/history')
 def history():
     username = session.get('username')  # Fetch username from session
     if not username:
         return redirect(url_for('login'))
-    return render_template('history.html', username=username)
+
+    conn = sqlite3.connect('project.db')
+    conn.row_factory = sqlite3.Row  # Allows row data to be accessed as dictionaries
+    cursor = conn.cursor()
+
+    # Fixed SQL query with correct spacing
+    cursor.execute('''
+        SELECT r.r_name AS Restaurant_Name, h.Rate, h.Reviews 
+        FROM History h 
+        JOIN Restaurant r ON h.r_id = r.r_id;
+    ''')
+    
+    result = cursor.fetchall()
+    conn.close()
+
+    history_list = [dict(row) for row in result]  # Convert rows to dictionaries
+
+    return render_template('history.html', username=username, history_list=history_list)
 
 
 @app.route('/home/rating')
@@ -104,6 +125,8 @@ def rating():
     if not username:
         return redirect(url_for('login'))
     return render_template('rating.html', username=username)
+
+
 @app.route('/get_random_restaurant', methods=['GET'])
 def get_random_restaurant():
     # 連接到 SQLite 資料庫
