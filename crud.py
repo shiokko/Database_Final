@@ -34,11 +34,11 @@ def add_Blist(black_id,username,black_date):
     #check if user exsist
     cursor.execute('''
         SELECT u_id, Name FROM Users WHERE Name = ?
-    ''',(username))
+    ''',(username,))
     user = cursor.fetchone()
 
     if not user:
-        print(f"'{user_name}' doesn't exist")
+        print(f"'{username}' doesn't exist")
         conn.close()
         return
 
@@ -48,7 +48,7 @@ def add_Blist(black_id,username,black_date):
     cursor.execute('''
         SELECT * FROM Blacklist
         WHERE b_id = ? AND u_id = ?
-    ''', (b_id, u_id))
+    ''', (black_id, u_id))
     blacklist = cursor.fetchone()
 
     if blacklist:
@@ -58,7 +58,7 @@ def add_Blist(black_id,username,black_date):
         cursor.execute('''
             INSERT INTO Blacklist (b_id, u_id, date)
             VALUES (?, ?, ?)
-        ''', (b_id, u_id, b_date))
+        ''', (black_id, u_id, b_date))
         conn.commit()
     conn.close()
 
@@ -79,18 +79,18 @@ def delete_Blist(black_id):
     conn.close()
 
 #存入歷史資料
-def add_History(h_id, username, r_id, rate, reviews, history_date):
+def add_History(history_id, username, restaurant_id, rate, reviews, history_date):
     conn = sqlite3.connect('project.db')
     cursor = conn.cursor()
 
     #check if user exsist
     cursor.execute('''
         SELECT u_id, Name FROM Users WHERE Name = ?
-    ''',(username))
+    ''',(username,))
     user = cursor.fetchone()
 
     if not user:
-        print(f"'{user_name}' doesn't exist")
+        print(f"'{username}' doesn't exist")
         conn.close()
         return
 
@@ -100,7 +100,7 @@ def add_History(h_id, username, r_id, rate, reviews, history_date):
     cursor.execute('''
         SELECT * FROM History
         WHERE h_id = ? AND u_id = ? AND Date = ?
-    ''', (h_id, u_id, history_date))
+    ''', (history_id, u_id, history_date))
     history = cursor.fetchone()
 
     if history:
@@ -110,8 +110,9 @@ def add_History(h_id, username, r_id, rate, reviews, history_date):
         cursor.execute('''
             INSERT INTO History (h_id, u_id, r_id, Rate, Reviews, Date)
             VALUES (?, ?, ?, ?, ?, ?)
-        ''', (h_id, u_id, r_id, rate, reviews, history_date))
-    conn.commit()
+        ''', (history_id, u_id, restaurant_id, rate, reviews, history_date))
+        conn.commit()
+    conn.close()
 
 
 
@@ -143,7 +144,7 @@ def read_user(username):
     conn.close()
 
 #查詢和隨機餐廳選擇
-def random():
+def random_restaurant():
 
     conn = sqlite3.connect('project.db')
     cursor = conn.cursor()
