@@ -6,10 +6,10 @@ CREATE TABLE Users (
 
 -- Create Blacklist table
 CREATE TABLE Blacklist (
+    h_id INTEGER PRIMARY KEY AUTOINCREMENT,
     b_id INTEGER NOT NULL,
     u_id INTEGER NOT NULL,
     date DATETIME NOT NULL,
-    PRIMARY KEY (b_id, u_id),
     FOREIGN KEY (u_id) REFERENCES Users (u_id)
 );
 
