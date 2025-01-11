@@ -1,10 +1,10 @@
-INSERT INTO Area (a_id, a_name) VALUES
+INSERT OR IGNORE INTO Area (a_id, a_name) VALUES
 (101, '集英樓'),
 (102, '樂活小舖'),
 (103, '安九'),
 (104, '自十');
 
-INSERT INTO Restaurant (r_id, r_name, a_id) VALUES
+INSERT OR IGNORE INTO Restaurant (r_id, r_name, a_id) VALUES
 ('100A', '阿關 丼飯麵咖哩', 101),
 ('100B', '給力盒子', 101),
 ('100C', '政大小吃部', 102),
@@ -19,7 +19,7 @@ INSERT INTO Restaurant (r_id, r_name, a_id) VALUES
 ('100L', 'cloud 義式廚房', 103),
 ('100M', '異國咖啡', 104);
 
-INSERT INTO Type (t_id, t_name) VALUES
+INSERT OR IGNORE INTO Type (t_id, t_name) VALUES
 (1001, '早餐店'),
 (1002, '飲料店'),
 (1003, '台式料理'),
@@ -28,7 +28,7 @@ INSERT INTO Type (t_id, t_name) VALUES
 (1006, '美式料理'),
 (1007, '義式料理');
 
-INSERT INTO Restaurant_Types (r_id, t_id) VALUES
+INSERT OR IGNORE INTO Restaurant_Types (r_id, t_id) VALUES
 ('100A', 1003),
 ('100A', 1004),
 ('100B', 1003),

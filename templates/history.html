@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='history.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="{{ url_for('welcome') }}"  class="btn">Home</a></li>
+            <li><a href="{{ url_for('history') }}"  class="btn">History</a></li>
+            <li><a href="{{ url_for('rating')  }}"  class="btn">Rating</a></li>
+
+            <li><a href="{{ url_for('login') }}" class="btn">Logout</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h2>Welcome, {{ username }}! Your Restaurant History</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Restaurant Name</th>
+                    <th>Rate</th>
+                    <th>Reviews</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for history in history_list %}
+                <tr>
+                    <td>{{ history.Restaurant_Name }}</td>
+                    <td>{{ history.Rate }}</td>
+                    <td>{{ history.Reviews }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+    </div></body>
+</html>

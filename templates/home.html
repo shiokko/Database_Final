@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Page</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="{{ url_for('welcome') }}"  class="btn">Home</a></li>
+            <li><a href="{{ url_for('history') }}"  class="btn">History</a></li>
+            <li><a href="{{ url_for('rating')  }}"  class="btn">Rating</a></li>
+            
+            <li><a href="{{ url_for('login') }}" class="btn">Logout</a></li>
+        </ul>
+    </nav>
+    <div class="welcome-container">
+        <h1>Welcome, {{ username }}!</h1>
+        <p>你今天想吃甚麼?</p>
+    </div>
+    <div class="restaurants-list">
+        <h2>餐廳推薦</h2>
+        <ul>
+            {% for restaurant in restaurants %}
+            <li>{{ restaurant }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+</body>
+</html>
+
