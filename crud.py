@@ -162,7 +162,7 @@ def random_restaurant():
     else:
         restaurant_name, area_name, type_name = "No restaurant found", "挖哩勒", "哭出來"
 
-     return restaurant_name
+     return result
 
 
 
