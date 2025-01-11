@@ -184,6 +184,43 @@ def search():
     # 渲染模板，將結果傳遞給 HTML
     return render_template('search.html', results=results)
 
+
+@app.route('/submit_rating', methods=['POST'])
+def submit_rating():
+    username = session.get('username')
+    restaurant_name = request.form['restaurant_name']
+    rating = request.form['rating']
+    review = request.form['review']
+    blacklist = request.form.get('blacklist') == 'true'  # 判斷是否勾選黑名單
+
+    # 查找餐廳和用戶 ID
+    conn = sqlite3.connect('project.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT r_id FROM Restaurant WHERE r_name = ?', (restaurant_name,))
+    restaurant_id = cursor.fetchone()[0]
+
+    cursor.execute('SELECT u_id FROM Users WHERE Name = ?', (username,))
+    user_id = cursor.fetchone()[0]
+
+    # 將評分存入 History 表
+    cursor.execute('''
+        INSERT INTO History (h_id, r_id, u_id, Rate, Reviews, Date)
+        VALUES (?, ?, ?, ?, datetime('now'))
+    ''', (restaurant_id, user_id, rating, review))
+    conn.commit()
+
+    # 如果勾選黑名單，將餐廳加入黑名單
+    if blacklist:
+        cursor.execute('''
+            INSERT INTO Blacklist (u_id, r_id, date)
+            VALUES (?, ?, datetime('now'))
+        ''', (user_id, restaurant_id))
+        conn.commit()
+
+    conn.close()
+
+    return jsonify({'success': True})
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8080)
 
