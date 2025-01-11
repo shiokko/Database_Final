@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>查詢餐廳</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='search.css') }}">
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li><a href="{{ url_for('welcome') }}" class="btn">Home</a></li>
+            <li><a href="{{ url_for('search') }}"  class="btn">Search</a></li>
+            <li><a href="{{ url_for('history') }}" class="btn">History</a></li>
+            <li><a href="{{ url_for('rating') }}" class="btn">Rating</a></li>
+            <li><a href="{{ url_for('login') }}" class="btn">Logout</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h1 class="title">Search for Restaurants</h1>
+        <form method="GET" action="/search" class="search-form">
+            <input type="text" name="query" class="search-box" placeholder="Enter restaurant name..." value="{{ request.args.get('query', '') }}">
+            <button type="submit" class="search-btn">Search</button>
+        </form>
+        {% if results %}
+        <table class="results-table">
+            <thead>
+                <tr>
+                    <th>餐廳名稱</th>
+                    <th>地點</th>
+                    <th>種類</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for result in results %}
+                    <tr>
+                        <td>{{ result.r_name }}</td>
+                        <td>{{ result.a_name }}</td>
+                        <td>{{ result.t_name }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+    
+    </div>
+    
+
+    
+</body>
+</html>
