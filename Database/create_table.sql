@@ -6,11 +6,12 @@ CREATE TABLE Users (
 
 -- Create Blacklist table
 CREATE TABLE Blacklist (
-    h_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    b_id INTEGER NOT NULL,
+    b_id INTEGER PRIMARY KEY AUTOINCREMENT,
+    h_id INTEGER NOT NULL,
     u_id INTEGER NOT NULL,
     date DATETIME NOT NULL,
-    FOREIGN KEY (u_id) REFERENCES Users (u_id)
+    FOREIGN KEY (u_id) REFERENCES Users (u_id),
+    FOREIGN KEY (h_id) REFERENCES History (h_id)
 );
 
 -- Create Area table
@@ -44,13 +45,12 @@ CREATE TABLE Restaurant_Types (
 
 -- Create History table
 CREATE TABLE History (
-    h_id INTEGER NOT NULL,
+    h_id INTEGER PRIMARY KEY AUTOINCREMENT,
     u_id INTEGER NOT NULL,
     r_id TEXT NOT NULL,
     Rate REAL NOT NULL,
     Reviews TEXT,
     Date DATETIME NOT NULL,
-    PRIMARY KEY (h_id, u_id),
     FOREIGN KEY (u_id) REFERENCES Users (u_id),
     FOREIGN KEY (r_id) REFERENCES Restaurant (r_id)
 );
