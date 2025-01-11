@@ -149,15 +149,20 @@ def random_restaurant():
     conn = sqlite3.connect('project.db')
     cursor = conn.cursor()
 
-    cursor.execute('''
-        SELECT Restaurant.r_name, Type.t_name
-        FROM Restaurant
-        JOIN Restaurant_Types ON Restaurant.r_id = Restaurant_Types.r_id
-        JOIN Type ON Restaurant_Types.t_id = Type.t_id
-    ''')
-    data = cursor.fetchall()
-
+    cursor.execute('SELECT r_name, a_name, t_name FROM Restaurant '
+                   'JOIN Area ON Restaurant.a_id = Area.a_id '
+                   'JOIN Restaurant_Types ON Restaurant.r_id = Restaurant_Types.r_id '
+                   'JOIN Type ON Restaurant_Types.t_id = Type.t_id '
+                   'ORDER BY RANDOM() LIMIT 1')
+    result = cursor.fetchone()
     conn.close()
+
+    if result:
+        restaurant_name, area_name, type_name = result
+    else:
+        restaurant_name, area_name, type_name = "No restaurant found", "挖哩勒", "哭出來"
+
+     return restaurant_name
 
 
 
