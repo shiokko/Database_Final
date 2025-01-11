@@ -43,9 +43,7 @@ def delete_Blist(black_id):
 #存入用戶資料
 def read_user(username):
 
-    #存到session(臨時性)假如覺得多於可刪(嗎?
-    session['username'] = username
-    
+        
     #存到Users Table
     conn = sqlite3.connect('project.db')
     cursor = conn.cursor()
@@ -54,7 +52,7 @@ def read_user(username):
         SELECT * FROM Users
         WHERE u_id = ?
     ''',(username,))
-    user = cursor.fetchone()
+    user = cursor.fetchall()
     conn.close()
 
 
