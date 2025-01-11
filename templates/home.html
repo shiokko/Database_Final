@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome Page</title>
+    <title>首頁</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
@@ -28,9 +28,10 @@
             <a id="restaurant-link" href="#" target="_blank"><h2 id="restaurant-name"></h2></a>
             <p id="area-name"></p>
             <p id="type-name"></p>
-            <p style="color: rgb(70, 91, 234);">點擊餐廳名字了解詳細資訊!!!</p>
-            <br>
+            <a href="{{ url_for('rating')  }}"  class="btn" style=" font-weight: bold;">➥我要評分⭐⭐⭐</a>
+            <p style="color: rgb(70, 91, 234);">點擊餐廳名字了解詳細資訊😻</p>
         </div>
+        <br>
         <button id="recommend-btn" class="btn">推薦餐廳</button>
     </div>
     <script>
