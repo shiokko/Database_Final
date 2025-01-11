@@ -68,7 +68,7 @@ INSERT OR IGNORE INTO Type (t_id, t_name) VALUES
 (1013, '餐酒館');
 
 INSERT OR IGNORE INTO Restaurant_Types (r_id, t_id) VALUES
-('200A', 1002),
+('200A', 1003),
 ('200B', 1009),
 ('200C', 1003),
 ('200D', 1003),

@@ -17,40 +17,8 @@
         </ul>
     </nav>
 
-    <div class="recommend-container">
-        <h1>今天的隨機推薦餐廳</h1>
-        <div id="restaurant-info" style="display: none;">
-            <!-- 餐廳名稱現在是鏈接 -->
-            <a id="restaurant-link" href="#" target="_blank"><h2 id="restaurant-name"></h2></a>
-            <p id="area-name"></p>
-            <p id="type-name"></p>
-            <p>點擊餐廳名字了解詳細資訊!!!</p>
-        </div>
-        <button id="recommend-btn" class="btn">推薦餐廳</button>
-    </div>
+    
 
-    <script>
-        $(document).ready(function() {
-            $('#recommend-btn').click(function() {
-                // 當按鈕被點擊時，發送 AJAX 請求
-                $.get('/get_random_restaurant', function(data) {
-                    // 顯示餐廳資訊
-                    $('#restaurant-info').show();
-                    
-                    // 顯示餐廳名稱並生成連結
-                    const restaurantName = data.restaurant_name;
-                    $('#restaurant-name').text(restaurantName);
-                    $('#restaurant-link').attr('href', 'https://www.google.com/maps/search/木柵' + encodeURIComponent(restaurantName));
-                    
-                    // 顯示區域和類型
-                    $('#area-name').text("所在區域：" + data.area_name);
-                    $('#type-name').text("餐廳類型：" + data.type_name);
-                    
-                    // 更改按鈕文本
-                    $('#recommend-btn').text('再推薦一間');
-                });
-            });
-        });
-    </script>
+    
 </body>
 </html>
