@@ -193,7 +193,7 @@ def submit_rating():
     review = request.form['review']
     blacklist = request.form.get('blacklist') == 'true'  # 判斷是否勾選黑名單
 
-    # 查找餐廳和用戶 ID
+    # # 查找餐廳和用戶 ID
     conn = sqlite3.connect('project.db')
     cursor = conn.cursor()
     cursor.execute('SELECT r_id FROM Restaurant WHERE r_name = ?', (restaurant_name,))
@@ -201,20 +201,22 @@ def submit_rating():
 
     cursor.execute('SELECT u_id FROM Users WHERE Name = ?', (username,))
     user_id = cursor.fetchone()[0]
-
+    print(restaurant_id)
+    print(user_id)
     # 將評分存入 History 表
     cursor.execute('''
-        INSERT INTO History (h_id, r_id, u_id, Rate, Reviews, Date)
+        INSERT INTO History (r_id, u_id, Rate, Reviews, Date)
         VALUES (?, ?, ?, ?, datetime('now'))
     ''', (restaurant_id, user_id, rating, review))
     conn.commit()
-
+    new_h_id = cursor.lastrowid
+    print("Inserted h_id:", new_h_id)
     # 如果勾選黑名單，將餐廳加入黑名單
     if blacklist:
         cursor.execute('''
-            INSERT INTO Blacklist (u_id, r_id, date)
+            INSERT INTO Blacklist (h_id, u_id, date)
             VALUES (?, ?, datetime('now'))
-        ''', (user_id, restaurant_id))
+        ''', (new_h_id, user_id))
         conn.commit()
 
     conn.close()
