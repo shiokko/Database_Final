@@ -159,6 +159,30 @@ def logout():
     session.clear()  # Clear session on logout
     return redirect(url_for('login'))
 
+@app.route('/search', methods=['GET'])
+def search():
+    query = request.args.get('query', '').strip().lower()
+    results = None
+
+    if query:
+        conn = sqlite3.connect('project.db')
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT r_name, a_name, t_name 
+            FROM Restaurant
+            JOIN Area ON Restaurant.a_id = Area.a_id
+            JOIN Restaurant_Types ON Restaurant.r_id = Restaurant_Types.r_id
+            JOIN Type ON Restaurant_Types.t_id = Type.t_id
+            WHERE LOWER(r_name) LIKE ? OR LOWER(t_name) LIKE ?
+        """, (f"%{query}%", f"%{query}%"))
+        results = [
+            {'r_name': row['r_name'], 'a_name': row['a_name'], 't_name': row['t_name']}
+            for row in cursor.fetchall()
+        ]
+        conn.close()
+    # 渲染模板，將結果傳遞給 HTML
+    return render_template('search.html', results=results)
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8080)

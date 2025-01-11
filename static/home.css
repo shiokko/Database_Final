@@ -66,15 +66,17 @@ body {
     font-size: 1.2rem;
     color: #4b5563;
 }
-.restaurants-list{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-family: Arial, sans-serif;
-    font-size: 18px;
-    line-height: 1.6;
+.recommend-container{
+    text-align: center;
+    padding: 2rem;
+    margin: 2rem auto;
+    max-width: 600px;
     background-color: #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+.recommend-container button{
+    width: 20%;
 }
 .recommend-container a{
     text-decoration: none;
