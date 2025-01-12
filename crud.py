@@ -146,24 +146,36 @@ def random_Restaurant():
 
 
 
-def search_Restaurant(query):
+def search_Restaurant(query,filter_types=None):
 
-    conn = sqlite3.connect('project.db')
-    conn.row_factory = sqlite3.Row 
-    cursor = conn.cursor()
-
-    cursor.execute("""
+    base_query = """
         SELECT r_name, a_name, t_name
         FROM Restaurant
         JOIN Area ON Restaurant.a_id = Area.a_id
         JOIN Restaurant_Types ON Restaurant.r_id = Restaurant_Types.r_id
         JOIN Type ON Restaurant_Types.t_id = Type.t_id
-        WHERE LOWER(r_name) LIKE ? OR LOWER(t_name) LIKE ?
-    """, (f"%{query}%", f"%{query}%"))
-    results = [
-        {'r_name': row['r_name'], 'a_name': row['a_name'], 't_name': row['t_name']}
-        for row in cursor.fetchall()
-    ]
+        WHERE 1=1
+    """
+    params = []
+
+     # 如果有搜尋關鍵字
+    if query:
+        base_query += " AND (LOWER(r_name) LIKE ? OR LOWER(t_name) LIKE ?)"
+        params.extend([f"%{query}%", f"%{query}%"])
+
+    # 如果有篩選條件
+    if filter_types:
+        placeholders = ",".join("?" for _ in filter_types)
+        base_query += f" AND Type.t_id IN ({placeholders})"
+        params.extend(filter_types)
+    
+    conn = sqlite3.connect('project.db')
+    conn.row_factory = sqlite3.Row 
+    cursor = conn.cursor()
+
+
+    cursor.execute(base_query, params)
+    results = cursor.fetchall()
     conn.close()
 
     return results

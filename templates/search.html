@@ -21,8 +21,51 @@
     <div class="container">
         <h1 class="title">Search for Restaurants</h1>
         <form method="GET" action="/search" class="search-form">
-            <input type="text" name="query" class="search-box" placeholder="Enter restaurant name..." value="{{ request.args.get('query', '') }}">
-            <button type="submit" class="search-btn">Search</button>
+            <div class="search-row">
+                <input type="text" name="query" class="search-box" placeholder="Enter restaurant name..." value="{{ request.args.get('query', '') }}">
+                <button type="submit" class="search-btn">Search</button>
+            </div>
+            <div class="filters">
+                <label>
+                    <input type="checkbox" name="type" value="1001" {% if "1001" in request.args.getlist('type') %}checked{% endif %}> 早餐店
+                </label>
+                <label>
+                    <input type="checkbox" name="type" value="1002" {% if "1002" in request.args.getlist('type') %}checked{% endif %}> 飲料店
+                </label>
+                <label>
+                    <input type="checkbox" name="type" value="1003" {% if "1003" in request.args.getlist('type') %}checked{% endif %}> 台式料理
+                </label>
+                <label>
+                    <input type="checkbox" name="type" value="1004" {% if "1004" in request.args.getlist('type') %}checked{% endif %}> 日式料理
+                </label>
+                <label>
+                    <input type="checkbox" name="type" value="1005" {% if "1005" in request.args.getlist('type') %}checked{% endif %}> 速食店
+                </label>
+                <label>
+                    <input type="checkbox" name="type" value="1006" {% if "1006" in request.args.getlist('type') %}checked{% endif %}> 美式料理
+                </label>
+                <label>
+                    <input type="checkbox" name="type" value="1007" {% if "1007" in request.args.getlist('type') %}checked{% endif %}> 義式料理
+                </label>
+                <label>
+                    <input type="checkbox" name="type" value="1008" {% if "1008" in request.args.getlist('type') %}checked{% endif %}> 素食料理
+                </label>
+                <label>
+                    <input type="checkbox" name="type" value="1009" {% if "1009" in request.args.getlist('type') %}checked{% endif %}> 韓式料理
+                </label>
+                <label>
+                    <input type="checkbox" name="type" value="1010" {% if "1010" in request.args.getlist('type') %}checked{% endif %}> 四川料理
+                </label>
+                <label>
+                    <input type="checkbox" name="type" value="1011" {% if "1011" in request.args.getlist('type') %}checked{% endif %}> 東南亞料理
+                </label>
+                <label>
+                    <input type="checkbox" name="type" value="1012" {% if "1012" in request.args.getlist('type') %}checked{% endif %}> 點心類
+                </label>
+                <label>
+                    <input type="checkbox" name="type" value="1013" {% if "1013" in request.args.getlist('type') %}checked{% endif %}> 餐酒館
+                </label>
+            </div>
         </form>
         {% if results %}
         <table class="results-table">

@@ -3,18 +3,109 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>餐廳評分</title>
+    <title>首頁</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
+
 <body>
     <nav class="navbar">
         <ul>
             <li><a href="{{ url_for('welcome') }}" class="btn">Home</a></li>
+            <li><a href="{{ url_for('search') }}" class="btn">Search</a></li>
             <li><a href="{{ url_for('history') }}" class="btn">History</a></li>
             <li><a href="{{ url_for('rating') }}" class="btn">Rating</a></li>
             <li><a href="{{ url_for('login') }}" class="btn">Logout</a></li>
         </ul>
     </nav>
+    <div class="welcome-container">
+        <h1>Welcome, {{ username }}!</h1>
+        <p>你今天想吃甚麼?</p>
+    </div>
+    <div class="recommend-container">
+        <h1>今天的隨機推薦餐廳</h1>
+        <div id="restaurant-info" style="display: none;">
+            <!-- 餐廳名稱現在是鏈接 -->
+            <a id="restaurant-link" href="#" target="_blank"><h2 id="restaurant-name"></h2></a>
+            <p id="area-name"></p>
+            <p id="type-name"></p>
+            <p style="color: rgb(70, 91, 234);">點擊餐廳名字了解詳細資訊😻</p>
+            <button id="rating-btn" class="btn" style="font-weight: bold;">➥我要評分⭐⭐⭐</button>
+        </div>
+        <div id="rating-section" style="display: none; margin-top: 20px;">
+            <h3>為這間餐廳評分</h3>
+            <label for="rating-score">評分 (1-5): </label>
+            <input type="number" id="rating-score" min="1" max="5" step="0.5">
+            <br>
+            <br>
+            <label for="rating-review">評論: </label>
+            <textarea id="rating-review" rows="3" cols="30" placeholder="請輸入評論..."></textarea>
+            <br>
+            <label>
+                <input type="checkbox" id="blacklist" name="blacklist" value="yes"> 將此餐廳加入黑名單
+            </label>
+            <br>
+            <button id="submit-rating-btn" class="btn">提交評分</button>
+        </div>
+        <br>
+        <button id="recommend-btn" class="btn">推薦餐廳</button>
+    </div>
+    <script>
+        $(document).ready(function () {
+            // 當按下推薦按鈕時
+            $('#recommend-btn').click(function () {
+                $.get('/get_random_restaurant', function (data) {
+                    // 顯示餐廳資訊
+                    $('#restaurant-info').show();
+
+                    // 顯示餐廳名稱並生成連結
+                    const restaurantName = data.restaurant_name;
+                    $('#restaurant-name').text(restaurantName);
+                    $('#restaurant-link').attr('href', 'https://www.google.com/maps/search/木柵' + encodeURIComponent(restaurantName));
+
+                    // 顯示區域和類型
+                    $('#area-name').text("所在區域：" + data.area_name);
+                    $('#type-name').text("餐廳類型：" + data.type_name);
+
+                    // 隱藏評分區域
+                    $('#rating-section').hide();
+
+                    // 更改按鈕文本
+                    $('#recommend-btn').text('再推薦一間');
+                });
+            });
+
+            // 當按下我要評分按鈕時
+            $('#rating-btn').click(function () {
+                $('#rating-section').show();
+            });
+
+            // 當按下提交評分按鈕時
+            $('#submit-rating-btn').click(function () {
+                const rating = $('#rating-score').val();
+                const review = $('#rating-review').val();
+                const restaurantName = $('#restaurant-name').text();
+                const isBlacklisted = $('#blacklist').prop('checked'); // 獲取勾選框的狀態
+
+                if (!rating || rating < 1 || rating > 5) {
+                    alert('請輸入有效的評分 (1-5)');
+                    return;
+                }
+
+                // 提交評分到後端
+                $.post('/submit_rating', {
+                    restaurant_name: restaurantName,
+                    rating: rating,
+                    review: review,
+                    blacklist: isBlacklisted  // 這裡傳遞黑名單狀態
+                }).done(function (response) {
+                    alert('評分成功！感謝您的回饋！');
+                    $('#rating-section').hide(); // 提交後隱藏評分區域
+                }).fail(function () {
+                    alert('提交失敗，請稍後再試。');
+                });
+            });
+        });
+    </script>
 </body>
 </html>
