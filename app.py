@@ -96,10 +96,7 @@ def logout():
 def search():
     query = request.args.get('query', '').strip().lower()
     filter_types = request.args.getlist('type')
-    results = None
-    
-    if query:
-        results = search_Restaurant(query,filter_types)
+    results = search_Restaurant(query, filter_types)
    
     return render_template('search.html', results=results, query=query, filter_types=filter_types)
 
