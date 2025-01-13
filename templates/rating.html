@@ -26,7 +26,7 @@
             <thead>
                 <tr>
                     <th>Name</th>
-                    <th>ID</th>
+                    <!-- <th>ID</th> -->
                     <th>date</th>
                     <th>移除黑名單</th>  <!-- Add this new column header for buttons -->
                 </tr>
@@ -56,8 +56,8 @@
                     const nameCell = document.createElement('td');
                     nameCell.textContent = user.name;
 
-                    const idCell = document.createElement('td');
-                    idCell.textContent = user.id;
+                    // const idCell = document.createElement('td');
+                    // idCell.textContent = user.id;
 
                     const memberSinceCell = document.createElement('td');
                     memberSinceCell.innerHTML = `<time datetime="${user.date}">${user.date}</time>`;
@@ -74,7 +74,7 @@
 
                     // Append the cells to the row
                     row.appendChild(nameCell);
-                    row.appendChild(idCell);
+                    // row.appendChild(idCell);
                     row.appendChild(memberSinceCell);
                     row.appendChild(actionCell);  // Add the action cell
 

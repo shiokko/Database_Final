@@ -205,7 +205,6 @@ def Rating(username, restaurant_id, rating, review):
         conn.close()
         return None
 
-    # restaurant_id = restaurant_id[0]
     user_id = user_id[0]
 
     #add into history
