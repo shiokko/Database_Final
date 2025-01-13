@@ -110,21 +110,22 @@ def submit_rating():
     rating = request.form['rating']
     review = request.form['review']
     blacklist = request.form.get('blacklist') == 'true'  # 判斷是否勾選黑名單
-
-    new_h_id = Rating(username, restaurant_name, rating, review)
-
-    if not new_h_id:
-        return jsonify({'error': '找不到，滾出政大'}), 400
-
-    if blacklist:
-        added = add_Blist(new_h_id, username)
-
-
-    if remove_blacklist:
-        removed = delete_Blacklist(new_h_id)
     
-    return jsonify({'success': True, 'history_id': new_h_id})
+    new_h_id = Rating(username, restaurant_name, rating, review)
+    print(new_h_id)
 
+    # if not new_h_id:
+    #     return jsonify({'error': '找不到，滾出政大'}), 400
+
+    # if blacklist:
+    #     added = add_Blist(new_h_id, username)
+
+
+    # # if remove_blacklist:
+    # #     removed = delete_Blacklist(new_h_id)
+    
+    # return jsonify({'success': True, 'history_id': new_h_id})
+    return jsonify({'success': True});
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8080)
 

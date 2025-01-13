@@ -40,7 +40,7 @@ def add_Blist(h_id,username):
     cursor.execute('''
         INSERT INTO Blacklist (h_id, u_id, date)
         VALUES (?, ?, datetime('now'))
-        ''', (black_id, u_id))
+        ''', (h_id, u_id))
     conn.commit()
     conn.close()
 
@@ -190,6 +190,8 @@ def Rating(username, restaurant_name, rating, review):
     restaurant_id = cursor.fetchone()
     cursor.execute('SELECT u_id FROM Users WHERE Name = ?', (username,))
     user_id = cursor.fetchone()
+    print(restaurant_id)
+    print(user_id)
 
     #check if r or u exsists
     if not restaurant_id or not user_id:
@@ -207,6 +209,7 @@ def Rating(username, restaurant_name, rating, review):
     conn.commit()
     new_h_id = cursor.lastrowid
     conn.close()
+    return(new_h_id)
 
 def get_Restaurants():
     conn = sqlite3.connect('project.db')
