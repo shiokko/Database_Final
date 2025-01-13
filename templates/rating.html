@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>首頁</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='rating.css') }}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
 
@@ -19,93 +19,98 @@
         </ul>
     </nav>
     <div class="welcome-container">
-        <h1>Welcome, {{ username }}!</h1>
-        <p>你今天想吃甚麼?</p>
+        <h1>我的黑名單</h1>
     </div>
-    <div class="recommend-container">
-        <h1>今天的隨機推薦餐廳</h1>
-        <div id="restaurant-info" style="display: none;">
-            <!-- 餐廳名稱現在是鏈接 -->
-            <a id="restaurant-link" href="#" target="_blank"><h2 id="restaurant-name"></h2></a>
-            <p id="area-name"></p>
-            <p id="type-name"></p>
-            <p style="color: rgb(70, 91, 234);">點擊餐廳名字了解詳細資訊😻</p>
-            <button id="rating-btn" class="btn" style="font-weight: bold;">➥我要評分⭐⭐⭐</button>
-        </div>
-        <div id="rating-section" style="display: none; margin-top: 20px;">
-            <h3>為這間餐廳評分</h3>
-            <label for="rating-score">評分 (1-5): </label>
-            <input type="number" id="rating-score" min="1" max="5" step="0.5">
-            <br>
-            <br>
-            <label for="rating-review">評論: </label>
-            <textarea id="rating-review" rows="3" cols="30" placeholder="請輸入評論..."></textarea>
-            <br>
-            <label>
-                <input type="checkbox" id="blacklist" name="blacklist" value="yes"> 將此餐廳加入黑名單
-            </label>
-            <br>
-            <button id="submit-rating-btn" class="btn">提交評分</button>
-        </div>
-        <br>
-        <button id="recommend-btn" class="btn">推薦餐廳</button>
+    <div class="welcome-container">
+        <table id="userTable" border="1">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>ID</th>
+                    <th>date</th>
+                    <th>移除黑名單</th>  <!-- Add this new column header for buttons -->
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data rows will be injected here -->
+            </tbody>
+        </table>
     </div>
     <script>
-        $(document).ready(function () {
-            // 當按下推薦按鈕時
-            $('#recommend-btn').click(function () {
-                $.get('/get_random_restaurant', function (data) {
-                    // 顯示餐廳資訊
-                    $('#restaurant-info').show();
+        // Function to fetch user data and update the table
+        async function fetchUserData() {
+            try {
+                const response = await fetch('/get_blacklist');
+                const users = await response.json();
 
-                    // 顯示餐廳名稱並生成連結
-                    const restaurantName = data.restaurant_name;
-                    $('#restaurant-name').text(restaurantName);
-                    $('#restaurant-link').attr('href', 'https://www.google.com/maps/search/木柵' + encodeURIComponent(restaurantName));
+                // Get the table body element
+                const tableBody = document.querySelector('#userTable tbody');
 
-                    // 顯示區域和類型
-                    $('#area-name').text("所在區域：" + data.area_name);
-                    $('#type-name').text("餐廳類型：" + data.type_name);
+                // Clear the table before adding new rows
+                tableBody.innerHTML = '';
 
-                    // 隱藏評分區域
-                    $('#rating-section').hide();
+                // Loop through the user data and create a row for each user
+                users.forEach(user => {
+                    const row = document.createElement('tr');
 
-                    // 更改按鈕文本
-                    $('#recommend-btn').text('再推薦一間');
+                    const nameCell = document.createElement('td');
+                    nameCell.textContent = user.name;
+
+                    const idCell = document.createElement('td');
+                    idCell.textContent = user.id;
+
+                    const memberSinceCell = document.createElement('td');
+                    memberSinceCell.innerHTML = `<time datetime="${user.member_since}">${user.member_since}</time>`;
+
+                    // Create the action button cell
+                    const actionCell = document.createElement('td');
+                    const actionButton = document.createElement('button');
+                    actionButton.textContent = '移除';  // Button text
+                    actionButton.classList.add('action-btn');  // Add class for styling or event listeners
+                    actionButton.onclick = () => RemoveBlacklist(user.id);  // Example action
+
+                    // Append the button to the action cell
+                    actionCell.appendChild(actionButton);
+
+                    // Append the cells to the row
+                    row.appendChild(nameCell);
+                    row.appendChild(idCell);
+                    row.appendChild(memberSinceCell);
+                    row.appendChild(actionCell);  // Add the action cell
+
+                    // Append the row to the table body
+                    tableBody.appendChild(row);
                 });
-            });
-
-            // 當按下我要評分按鈕時
-            $('#rating-btn').click(function () {
-                $('#rating-section').show();
-            });
-
-            // 當按下提交評分按鈕時
-            $('#submit-rating-btn').click(function () {
-                const rating = $('#rating-score').val();
-                const review = $('#rating-review').val();
-                const restaurantName = $('#restaurant-name').text();
-                const isBlacklisted = $('#blacklist').prop('checked'); // 獲取勾選框的狀態
-
-                if (!rating || rating < 1 || rating > 5) {
-                    alert('請輸入有效的評分 (1-5)');
-                    return;
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+            }
+        }
+        function RemoveBlacklist(userId) {
+            fetch('/removeblacklist', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',  // Set content type to JSON
+                },
+                body: JSON.stringify({ userId: userId }),  // Send the userId in the request body
+            })
+            .then(response => response.json())  // Parse the JSON response from the server
+            .then(data => {
+                console.log('Response from server:', data);
+                if (data.success) {
+                    alert(`User ${userId} has been removed from the blacklist.`);
+                    fetchUserData();  // Refresh the table to reflect the changes
+                } else {
+                    alert('Failed to remove the user from the blacklist.');
                 }
-
-                // 提交評分到後端
-                $.post('/submit_rating', {
-                    restaurant_name: restaurantName,
-                    rating: rating,
-                    review: review,
-                    blacklist: isBlacklisted  // 這裡傳遞黑名單狀態
-                }).done(function (response) {
-                    alert('評分成功！感謝您的回饋！');
-                    $('#rating-section').hide(); // 提交後隱藏評分區域
-                }).fail(function () {
-                    alert('提交失敗，請稍後再試。');
-                });
+            })
+            .catch(error => {
+                console.error('Error removing user from blacklist:', error);
+                alert('An error occurred while removing the user.');
             });
-        });
+        }
+
+        // Fetch user data when the page loads
+        window.onload = fetchUserData;
     </script>
 </body>
 </html>
