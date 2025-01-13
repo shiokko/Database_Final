@@ -12,7 +12,7 @@
 ---
 ## PPT連結
 
-[PPT](https://www.canva.com/design/DAGb-mUCoH0/e23cgZVGY2YAT2w65nsYjA/edit?utm_content=DAGb-mUCoH0&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+[GO TO PPT](https://www.canva.com/design/DAGb-mUCoH0/e23cgZVGY2YAT2w65nsYjA/edit?utm_content=DAGb-mUCoH0&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
 
 ---
 ## 專案簡介
