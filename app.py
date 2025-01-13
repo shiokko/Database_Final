@@ -3,7 +3,7 @@ import sqlite3
 import os
 import random
 from crud import exe_sql, add_Blist, delete_Blist, get_History, read_User
-from crud import random_Restaurant, search_Restaurant, Rating, get_Restaurants
+from crud import random_Restaurant, search_Restaurant, Rating, get_Restaurants, get_Blacklist, remove_Blacklist
 
 app = Flask(__name__)
 app.secret_key = 'key'  # this is a requirement for using session
@@ -113,18 +113,46 @@ def submit_rating():
     new_h_id = Rating(username, restaurant_name, rating, review)
     print(new_h_id)
 
-    # if not new_h_id:
-    #     return jsonify({'error': '找不到，滾出政大'}), 400
+    if not new_h_id:
+        return jsonify({'error': '找不到，滾出政大'}), 400
 
-    # if blacklist:
-    #     added = add_Blist(new_h_id, username)
+    if blacklist:
+        added = add_Blist(new_h_id, username)
 
 
     # # if remove_blacklist:
     # #     removed = delete_Blacklist(new_h_id)
     
-    # return jsonify({'success': True, 'history_id': new_h_id})
-    return jsonify({'success': True});
+    return jsonify({'success': True, 'history_id': new_h_id})
+
+
+@app.route('/get_blacklist')
+def printBlacklist():
+    username = session.get('username')
+    print(f"Session username: {username}")  # Debugging line
+    if not username:
+        # Handle the case when the username is not available in the session
+        return redirect('/login')  # Or redirect to an appropriate page
+    data = get_Blacklist(username)
+    return jsonify(data)
+
+
+@app.route('/removeblacklist', methods=['POST'])
+def remove_from_blacklist():
+    try:
+        data = request.get_json()
+        user_id = data.get('userId')
+
+        result = remove_Blacklist(user_id)
+
+        success = True
+
+        # Return a JSON response
+        return jsonify({'success': success})
+    except Exception as e:
+        print(f"Error removing user from blacklist: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=8080)
 

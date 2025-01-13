@@ -1,6 +1,7 @@
 import os
 import sqlite3
-
+import json
+from flask import Flask, render_template, request, redirect, url_for, session, jsonify
 
 #連接到資料庫
 def exe_sql(sql_folder,insert_files):
@@ -208,6 +209,55 @@ def Rating(username, restaurant_name, rating, review):
     new_h_id = cursor.lastrowid
     conn.close()
     return(new_h_id)
+
+
+
+def get_Blacklist(username):
+    conn = sqlite3.connect('project.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT u_id FROM Users WHERE Name = ?', (username,))
+    user_id = cursor.fetchone()[0]
+    cursor.execute('''
+            SELECT Blacklist.b_id, Blacklist.date, History.r_id, Restaurant.r_name
+            FROM Blacklist
+            JOIN History ON Blacklist.h_id = History.h_id
+            JOIN Restaurant ON History.r_id = Restaurant.r_id
+            WHERE Blacklist.u_id = ?
+        ''', (user_id,))
+    results = cursor.fetchall()
+
+    datas = []
+    for result in results:
+        # Example logic to map query result to user-like structure
+        data = {
+            "name": result[3],  # Assuming result[3] is the restaurant name
+            "id": result[0],  # Assuming result[0] is the b_id (blacklist ID)
+            "date": result[1],  # Assuming result[1] is the date
+        }
+        datas.append(data)
+    print(datas)
+    return datas
+
+
+def remove_Blacklist(blacklist_id):
+    try:
+        conn = sqlite3.connect('project.db')
+        cursor = conn.cursor()
+
+        cursor.execute('''
+                DELETE FROM Blacklist
+                WHERE b_id = ?;
+            ''', (blacklist_id,))
+        results = cursor.fetchall()
+
+        conn.commit()
+        conn.close()
+        return jsonify({'success': True, 'message': f'User with b_id {blacklist_id} removed successfully.'})
+
+    except Exception as e:
+        print(f"Error removing user from blacklist: {e}")
+        return jsonify({'success': False, 'error': str(e)}), 500
+    return 0
 
 def get_Restaurants():
     conn = sqlite3.connect('project.db')
