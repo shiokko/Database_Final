@@ -33,7 +33,7 @@ Enter the Database by using the command `sqlite3 project.db`.
 ## 系統功能
 1. **隨機餐廳功能**：
    - 一鍵隨機推薦附近的餐廳。
-   - 支援 Google Maps 導航。
+   - 支援外部連結 Google Maps 。
 2. **搜尋餐廳功能**：
    - 輸入關鍵字或選擇分類篩選餐廳。
 3. **評分系統功能**：
