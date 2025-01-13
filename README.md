@@ -10,7 +10,11 @@
 | **吳珮嘉**   | 111703057  | 查詢（分類）、PPT    | 20%      |
 
 ---
+## PPT連結
 
+[PPT](https://www.canva.com/design/DAGb-mUCoH0/e23cgZVGY2YAT2w65nsYjA/edit?utm_content=DAGb-mUCoH0&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+
+---
 ## 專案簡介
 身為政治大學的學生，常常在用餐時間不知道吃什麼。因此，我們設計了一個隨機餐廳推薦系統，幫助用戶快速決定用餐地點。本系統還提供評分、搜尋、黑名單等功能，讓使用者打造屬於自己的美食筆記。
 
