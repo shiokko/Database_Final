@@ -130,9 +130,13 @@ def random_Restaurant(username):
         JOIN Restaurant_Types ON Restaurant.r_id = Restaurant_Types.r_id
         JOIN Type ON Restaurant_Types.t_id = Type.t_id
         WHERE Restaurant.r_id NOT IN (
-            SELECT h_id
-            FROM Blacklist
-            WHERE u_id = ?
+            SELECT r_id
+            FROM History
+            WHERE h_id IN (
+                SELECT h_id
+                FROM Blacklist
+                WHERE u_id = ?
+            )
         )
         ORDER BY RANDOM()
         LIMIT 1
@@ -292,4 +296,3 @@ def get_Restaurants():
 
     return formatted_restaurants
 
-    
