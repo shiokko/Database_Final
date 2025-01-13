@@ -1,36 +1,44 @@
-import os
 import sqlite3
-from flask import Flask, render_template, request, redirect, url_for, session, jsonify
-import json
 
+def random_Restaurant(username):
+    conn = sqlite3.connect('project.db')
+    cursor = conn.cursor()
 
+    cursor.execute('SELECT u_id FROM Users WHERE Name = ?', (username,))
+    user_id = cursor.fetchone()[0]
 
-conn = sqlite3.connect('project.db')
-cursor = conn.cursor()
-# cursor.execute('SELECT u_id FROM Users WHERE Name = ?', (username,))
-user_id = 4
-cursor.execute('''
-            SELECT Blacklist.b_id, Blacklist.date, History.r_id, Restaurant.r_name
+    cursor.execute('''
+        SELECT Restaurant.r_id, r_name, a_name, t_name
+        FROM Restaurant
+        JOIN Area ON Restaurant.a_id = Area.a_id
+        JOIN Restaurant_Types ON Restaurant.r_id = Restaurant_Types.r_id
+        JOIN Type ON Restaurant_Types.t_id = Type.t_id
+        WHERE Restaurant.r_id NOT IN (
+            SELECT h_id
             FROM Blacklist
-            JOIN History ON Blacklist.h_id = History.h_id
-            JOIN Restaurant ON History.r_id = Restaurant.r_id
-            WHERE Blacklist.u_id = ?
-        ''', (user_id,))
-results = cursor.fetchall()
+            WHERE u_id = ?
+        )
+        ORDER BY RANDOM()
+        LIMIT 1
+    ''', (user_id,))
+    
+    result = cursor.fetchone()
+    conn.close()
 
-datas = []
-for result in results:
-    # Example logic to map query result to user-like structure
-    data = {
-        "name": result[3],  # Assuming result[3] is the restaurant name
-        "id": result[0],  # Assuming result[0] is the b_id (blacklist ID)
-        "date": result[1],  # Assuming result[1] is the date
-    }
-    datas.append(data)
-# columns = [description[0] for description in cursor.description]  # Get column names from the cursor
-# data = [dict(zip(columns, row)) for row in results]
+    if result:
+        return {
+            'restaurant_id': result[0],
+            'restaurant_name': result[1],
+            'area_name': result[2],
+            'type_name': result[3]
+        }
+    else:
+        return {
+            'restaurant_id': None,
+            'restaurant_name': "No restaurant found",
+            'area_name': "挖哩勒",
+            'type_name': "哭出來"
+        }
 
-# # Convert the data to JSON format
-# json_data = json.dumps(data, ensure_ascii=False, indent=4)
-print(datas)
-# print(rows[1])
+
+print(random_Restaurant('billy'))

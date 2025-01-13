@@ -76,7 +76,8 @@ def rating():
 
 @app.route('/get_random_restaurant', methods=['GET'])
 def get_random_restaurant():
-    restaurant = random_Restaurant()
+    username = session.get('username')
+    restaurant = random_Restaurant(username)
     if restaurant['restaurant_name'] == "No restaurant found":
         # 當結果為空時返回錯誤訊息
         return jsonify({
@@ -105,13 +106,11 @@ def search():
 @app.route('/submit_rating', methods=['POST'])
 def submit_rating():
     username = session.get('username')
-    restaurant_name = request.form['restaurant_name']
     rating = request.form['rating']
     review = request.form['review']
+    restaurant_ID = request.form['restaurant_id']
     blacklist = request.form.get('blacklist') == 'true'  # 判斷是否勾選黑名單
-    
-    new_h_id = Rating(username, restaurant_name, rating, review)
-    print(new_h_id)
+    new_h_id = Rating(username, restaurant_ID, rating, review)
 
     if not new_h_id:
         return jsonify({'error': '找不到，滾出政大'}), 400
@@ -129,7 +128,6 @@ def submit_rating():
 @app.route('/get_blacklist')
 def printBlacklist():
     username = session.get('username')
-    print(f"Session username: {username}")  # Debugging line
     if not username:
         # Handle the case when the username is not available in the session
         return redirect('/login')  # Or redirect to an appropriate page

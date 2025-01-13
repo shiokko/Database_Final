@@ -26,6 +26,7 @@
         <div id="restaurant-info" style="display: none;">
             <!-- 餐廳名稱現在是鏈接 -->
             <a id="restaurant-link" href="#" target="_blank"><h2 id="restaurant-name"></h2></a>
+            <p id="restaurant-id"></p>
             <p id="area-name"></p>
             <p id="type-name"></p>
             <p style="color: rgb(70, 91, 234);">點擊餐廳名字了解詳細資訊😻</p>
@@ -59,7 +60,10 @@
 
                     // 顯示餐廳名稱並生成連結
                     const restaurantName = data.restaurant_name;
+                    const restaurantID = data.restaurant_id;
                     $('#restaurant-name').text(restaurantName);
+                    $('#restaurant-id').text(restaurantID);
+                    $('#restaurant-id').hide();
                     $('#restaurant-link').attr('href', 'https://www.google.com/maps/search/木柵' + encodeURIComponent(restaurantName));
 
                     // 顯示區域和類型
@@ -83,7 +87,7 @@
             $('#submit-rating-btn').click(function () {
                 const rating = $('#rating-score').val();
                 const review = $('#rating-review').val();
-                const restaurantName = $('#restaurant-name').text();
+                const restaurantId = $('#restaurant-id').text();
                 const isBlacklisted = $('#blacklist').prop('checked'); // 獲取勾選框的狀態
 
                 if (!rating || rating < 1 || rating > 5) {
@@ -93,10 +97,10 @@
 
                 // 提交評分到後端
                 $.post('/submit_rating', {
-                    restaurant_name: restaurantName,
                     rating: rating,
                     review: review,
-                    blacklist: isBlacklisted  // 這裡傳遞黑名單狀態
+                    blacklist: isBlacklisted,
+                    restaurant_id: restaurantId  // 這裡傳遞黑名單狀態
                 }).done(function (response) {
                     alert('評分成功！感謝您的回饋！');
                     $('#rating-section').hide(); // 提交後隱藏評分區域

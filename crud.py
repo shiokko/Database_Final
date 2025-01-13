@@ -116,34 +116,45 @@ def read_User(username):
     conn.close()
 
 #查詢和隨機餐廳選擇
-def random_Restaurant():
+def random_Restaurant(username):
 
     conn = sqlite3.connect('project.db')
     cursor = conn.cursor()
+    cursor.execute('SELECT u_id FROM Users WHERE Name = ?', (username,))
+    user_id = cursor.fetchone()[0]
 
-    cursor.execute('SELECT r_name, a_name, t_name FROM Restaurant '
-                   'JOIN Area ON Restaurant.a_id = Area.a_id '
-                   'JOIN Restaurant_Types ON Restaurant.r_id = Restaurant_Types.r_id '
-                   'JOIN Type ON Restaurant_Types.t_id = Type.t_id '
-                   'ORDER BY RANDOM() LIMIT 1')
+    cursor.execute('''
+        SELECT Restaurant.r_id, r_name, a_name, t_name
+        FROM Restaurant
+        JOIN Area ON Restaurant.a_id = Area.a_id
+        JOIN Restaurant_Types ON Restaurant.r_id = Restaurant_Types.r_id
+        JOIN Type ON Restaurant_Types.t_id = Type.t_id
+        WHERE Restaurant.r_id NOT IN (
+            SELECT h_id
+            FROM Blacklist
+            WHERE u_id = ?
+        )
+        ORDER BY RANDOM()
+        LIMIT 1
+    ''', (user_id,))
     result = cursor.fetchone()
     conn.close()
 
     if result:
-        return{
-            'restaurant_name': result[0],
-            'area_name': result[1],
-            'type_name': result[2]
-                }
+        return {
+                'restaurant_id': result[0],
+                'restaurant_name': result[1],
+                'area_name': result[2],
+                'type_name': result[3]
+        }
     else:
         return {
+            'restaurant_id': None,
             'restaurant_name': "No restaurant found",
             'area_name': "挖哩勒",
             'type_name': "哭出來"
-                }
+        }
      
-
-
 
 def search_Restaurant(query,filter_types=None):
 
@@ -180,13 +191,10 @@ def search_Restaurant(query,filter_types=None):
     return results
 
 #評分系統
-def Rating(username, restaurant_name, rating, review):
+def Rating(username, restaurant_id, rating, review):
     conn = sqlite3.connect('project.db')
     cursor = conn.cursor()
     
-    #查詢餐廳和users
-    cursor.execute('SELECT r_id FROM Restaurant WHERE r_name = ?', (restaurant_name,))
-    restaurant_id = cursor.fetchone()
     cursor.execute('SELECT u_id FROM Users WHERE Name = ?', (username,))
     user_id = cursor.fetchone()
     print(restaurant_id)
@@ -197,7 +205,7 @@ def Rating(username, restaurant_name, rating, review):
         conn.close()
         return None
 
-    restaurant_id = restaurant_id[0]
+    # restaurant_id = restaurant_id[0]
     user_id = user_id[0]
 
     #add into history
@@ -235,7 +243,6 @@ def get_Blacklist(username):
             "date": result[1],  # Assuming result[1] is the date
         }
         datas.append(data)
-    print(datas)
     return datas
 
 
@@ -255,7 +262,6 @@ def remove_Blacklist(blacklist_id):
         return jsonify({'success': True, 'message': f'User with b_id {blacklist_id} removed successfully.'})
 
     except Exception as e:
-        print(f"Error removing user from blacklist: {e}")
         return jsonify({'success': False, 'error': str(e)}), 500
     return 0
 
