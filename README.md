@@ -13,8 +13,6 @@ Enter the Database by using the command `sqlite3 project.db`.
 
 # 政大周邊餐廳隨機選擇系統
 
-![Banner](https://via.placeholder.com/800x200.png?text=%E6%94%BF%E5%A4%A7%E9%A4%90%E5%BB%B3%E9%9A%A8%E6%A9%9F%E6%8E%A8%E8%96%A6%E7%B3%BB%E7%B5%B1)
-
 ## 專案簡介
 身為政治大學的學生，常常在用餐時間不知道吃什麼。因此，我們設計了一個隨機餐廳推薦系統，幫助用戶快速決定用餐地點。本系統還提供評分、搜尋、黑名單等功能，讓使用者打造屬於自己的美食筆記。
 
@@ -38,7 +36,7 @@ Enter the Database by using the command `sqlite3 project.db`.
 ## ER 模型
 以下是本系統使用的 ER 模型，為資料庫設計提供基礎結構。
 
-![ER-Model](https://via.placeholder.com/800x400.png?text=ER+Model+Placeholder)
+![ER-Model](S__47341571.jpg)
 
 ---
 
