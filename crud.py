@@ -46,8 +46,6 @@ def add_Blist(h_id,username):
 
     return True
 
-
-
 #清除黑名單
 def delete_Blist(black_id):
     conn = sqlite3.connect('project.db')
@@ -67,33 +65,33 @@ def delete_Blist(black_id):
 #存入歷史資料
 def get_History(username):
     conn = sqlite3.connect('project.db')
+    conn.row_factory = sqlite3.Row  # Assign row factory before creating cursor
     cursor = conn.cursor()
-    conn.row_factory = sqlite3.Row
 
     cursor.execute('SELECT u_id FROM Users WHERE Name = ?', (username,))
     user = cursor.fetchone()
-    
-    #check if user exsist
+
+    # 檢查用戶是否存在
     if not user:
         print(f"'{username}' doesn't exist")
         conn.close()
         return []
 
-    #查詢user紀錄
+    u_id = user["u_id"]  # Extract user ID
+
+    # 查詢用戶歷史紀錄
     cursor.execute('''
-        SELECT r.r_name AS Restaurant_Name, h.Rate, h.Reviews 
-        FROM History h 
+        SELECT r.r_name AS Restaurant_Name, h.Rate, h.Reviews
+        FROM History h
         JOIN Restaurant r ON h.r_id = r.r_id
-        JOIN Users u ON h.u_id = u.u_id
-        WHERE u.Name = ?    
-    ''',(username,))
+        WHERE h.u_id = ?
+    ''', (u_id,))
+    
     results = cursor.fetchall()
     conn.close()
 
-    if results:
-        return [dict(row) for row in results]
-    else:
-        return []    
+    return [dict(row) for row in results] if results else []
+   
 
 #存入用戶資料log in(sign in)
 def read_User(username):

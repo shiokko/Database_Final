@@ -60,7 +60,6 @@ def history():
     username = session.get('username')  # Fetch username from session
     if not username:
         return redirect(url_for('login'))
-
     
     history_list =get_History(username)
 
