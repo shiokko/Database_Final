@@ -11,6 +11,18 @@ And the port is `8080`. <br />
 `project.db` is the created Database. <br />
 Enter the Database by using the command `sqlite3 project.db`.
 
+---
+## 團隊成員與分工
+
+| 組員         | 學號       | 分工內容              | 貢獻比例 |
+|--------------|------------|-----------------------|----------|
+| **何嘉柚**   | 111703010  | 歷史紀錄、創建資料庫 | 20%      |
+| **葉宇翰**   | 111703016  | 評分系統、黑名單     | 20%      |
+| **賴元智（組長）** | 111703043 | 隨機選擇、PPT        | 20%      |
+| **吳岱芸**   | 111703047  | CRUD、CSS 美化       | 20%      |
+| **吳珮嘉**   | 111703057  | 查詢（分類）、PPT    | 20%      |
+
+---
 # 政大周邊餐廳隨機選擇系統
 
 ## 專案簡介
@@ -33,13 +45,17 @@ Enter the Database by using the command `sqlite3 project.db`.
 
 ---
 
-## ER 模型
+## ER-model
 以下是本系統使用的 ER 模型，為資料庫設計提供基礎結構。
 
 ![ER-Model](S__47341571.jpg)
 
 ---
+## Relational schema
 
+![Relation schema](S__47341581.jpg)
+
+---
 ## 系統架構
 - **前端**：HTML、CSS、JavaScript
 - **後端**：Flask (Python)
